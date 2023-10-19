@@ -1,6 +1,9 @@
 #!/bin/bash
 
 INSTALLSCRIPT=./install-script.sh
+WOL_SCRIPT=./script-files/wol-script.sh
+
+mkdir "script-files"
 
 if test -f "$INSTALLSCRIPT"; then
   if test -f "$INSTALLSCRIPT.bak"; then
@@ -11,11 +14,6 @@ fi
 
 cat >>$INSTALLSCRIPT <<EOF
 #!/bin/bash
-
-if [ "\$EUID" -ne 0 ]
-  then echo "Por favor rode o script como sudo."
-  exit
-fi
 
 EOF
 
@@ -123,7 +121,7 @@ cd \$LUGAR_ATUAL
 # Adicionando o plugin zsh-syntax-highlighting
 cd ~
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-echo "source \${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> \${ZDOTDIR:-\$HOME}/.zshrc
+echo "source \\\${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> \${ZDOTDIR:-\$HOME}/.zshrc
 cd \$LUGAR_ATUAL
 
 # Adicionando o plugin zsh-autosuggestions
@@ -156,7 +154,8 @@ echo "Deseja adicionar um serviço para ativar o wakeonlan? (Y/n)"
 read ADICIONAR_WOL
 
 if [ "${ADICIONAR_WOL,,}" == "y" ]; then
-  cat >>$INSTALLSCRIPT <<EOF
+  cat >>$WOL_SCRIPT <<EOF
+#!/bin/bash
 
 # Script Wake on lan
 
@@ -185,6 +184,11 @@ FIM
 sudo systemctl daemon-reload
 sudo systemctl enable wol_fix.service
 
+EOF
+
+  cat >>$INSTALLSCRIPT <<EOF
+chmod 777 ./script-files/wol-script.sh
+sudo "./script-files/wol-script.sh"
 EOF
 fi
 
