@@ -82,7 +82,7 @@ read PACKAGES
 
 if [ "$PACKAGES" != "" ]; then
   cat >>$INSTALLSCRIPT <<EOF
-INSTALL_PACKAGES=(wget curl unzip zip git $PACKAGES)
+INSTALL_PACKAGES="wget curl unzip zip git $PACKAGES"
 
 $COMANDO_INSTALL \$INSTALL_PACKAGES
 
