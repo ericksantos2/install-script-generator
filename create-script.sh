@@ -144,7 +144,7 @@ if [ "${ADICIONAR_BREW,,}" == "y" ]; then
 EOF
   if [ "${ADICIONAR_ZSH,,}" == "y" ]; then
     cat >>$INSTALLSCRIPT <<EOF
-echo "export PATH=\$PATH:/home/linuxbrew/.linuxbrew/bin" >> ~/.zshrc
+echo "export PATH=\\\$PATH:/home/linuxbrew/.linuxbrew/bin" >> ~/.zshrc
 
 EOF
   fi
